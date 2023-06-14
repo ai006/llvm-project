@@ -1,0 +1,11 @@
+1. how to build program and flags 
+clang -Xclang -disable-O0-optnone -O0 -emit-llvm newStatic.cpp -S -o newStatic.ll
+
+2. Writing a transformation pass
+https://www.cs.cornell.edu/~asampson/blog/llvm.html
+
+3. how to run a pass with a .ll extension 
+build/bin/opt -disable-output /tmp/a.ll -passes=safeRegion
+
+4. how to build a new LLVM
+ninja -C build/ opt -j30

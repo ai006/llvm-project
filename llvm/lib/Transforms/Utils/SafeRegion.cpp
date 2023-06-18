@@ -39,6 +39,7 @@ enum VariableType{
   STRING,
   ARRAY,
   FLOAT,
+  STRUCT,
   UNKNOWN
 };
 
@@ -66,7 +67,7 @@ map<llvm::Instruction*, Variables> allVariables;
 function to use to get the type of variable
 in the form of a string
 */
-VariableType getVariableType(Type* var, Instruction* tmpInstruction){
+VariableType getVariableType(Type* var, GlobalVariable* tmpInstruction){
 
     //get the type
     if(var->isIntegerTy()){
@@ -77,47 +78,84 @@ VariableType getVariableType(Type* var, Instruction* tmpInstruction){
       else if(integer->getBitWidth() == 64)
         return VariableType::LONG;
       else{
-        //should get this to work tell if string etc...
-        if(auto *data = dyn_cast<Constant>(tmpInstruction)){
-          errs() << "found string"<<*data << "\n";
+        if(tmpInstruction){
+          //check if the global value is initialized with a constant
+          if(tmpInstruction->isConstant() || tmpInstruction->hasInitializer()) {   
+            //check if it is a by string (char array)         
+            if(dyn_cast<ConstantDataArray>(tmpInstruction->getInitializer()))
+              return VariableType::ARRAY;
+            else{
+              //if it is an integer
+              if(integer->getBitWidth() == 32)
+                return VariableType::INTEGER;
+              else{
+                //assert(false); 
+              }          
+            }
+          }
+          else{
+            //assert(false);
+          }
         }
         else{
-          errs() << "unknown "<<*integer <<"\n";
-        }
+          //assert(false);   //check which type of variable you missed
+        } 
+
       }
-      return VariableType::INTEGER;
     }
     else if(var->isFloatTy())
       return VariableType::FLOAT;
     else if(var->isDoubleTy())
       return VariableType::DOUBLE;
-    
+    else if(var->isStructTy())
+      return VariableType::STRUCT;
+    else{
+      //assert(false);
+    }
+
     return VariableType::UNKNOWN;
 }
 
-long getVariableSize(Type* var){
-    //get the type
-    if(var->isIntegerTy()){
-      //get the type of integer
-      IntegerType* integer = (llvm::IntegerType*) var;
-      if(integer->getBitWidth() == 8)
-        return 1;
-      else if(integer->getBitWidth() == 64)
-        return 8;
-      else if(integer->getBitWidth() == 32)
-        return 4;
-      else 
-        return 0;
+long getIntegerVariableSize(IntegerType* integer, GlobalVariable* tmpInstruction) {
+    if (tmpInstruction){
+      if(tmpInstruction->isConstant() || tmpInstruction->hasInitializer()) {
+        if (ConstantDataArray* arrayInitializer = dyn_cast<ConstantDataArray>(tmpInstruction->getInitializer())) {
+            unsigned int bitWidth = arrayInitializer->getElementType()->getIntegerBitWidth();
+            unsigned int arraySize = arrayInitializer->getNumElements() * bitWidth / 8;
+            return arraySize;
+        }
+        else {
+            return integer->getBitWidth() / 8;          
+        }
+      }
     }
-    else if(var->isFloatTy())
-      return var->getScalarSizeInBits()/8;
-    else if(var->isDoubleTy())
-      return var->getScalarSizeInBits()/8;
-    
+    else {
+        return integer->getBitWidth() / 8;
+    }
+
     return 0;
 }
 
-// void addVariable(MemoryLocation memLoc){}
+long getVariableSize(Type* var, GlobalVariable* tmpInstruction) {
+    if (var->isIntegerTy()) {
+        IntegerType *integer = dyn_cast<IntegerType>(var);
+        return getIntegerVariableSize(integer, tmpInstruction);
+    }
+    else if (var->isFloatTy()) {
+        return var->getScalarSizeInBits() / 8;
+    }
+    else if (var->isDoubleTy()) {
+        return var->getScalarSizeInBits() / 8;
+    }
+    else if (var->isArrayTy()) {
+      ArrayType *arr = dyn_cast<ArrayType>(var);
+      unsigned int bitWidth = arr->getElementType()->getIntegerBitWidth();
+      unsigned int arraySize = arr->getNumElements() * bitWidth / 8;
+      return arraySize;
+    }
+    
+    return 0;
+}
 
 /*
 change this so that you get all the aloca Information 
@@ -136,9 +174,12 @@ static bool safeRegion(Function &F) {
       for(auto& op : inst->operands()){
         
         //check if any global value is used as an operand of the instruction
-        if(auto *globalInst = dyn_cast<GlobalVariable>(&op)){
-          VariableType type = getVariableType(inst->getType(), inst);
-          long size = getVariableSize(inst->getType());
+        if(auto *globalVar = dyn_cast<GlobalVariable>(&op)){
+
+          errs() << "GB: " << *globalVar << "\n";
+
+          VariableType type = getVariableType(inst->getType(), globalVar);
+          long size = getVariableSize(inst->getType(), globalVar);
           Variables var;
           var.type = type;
           var.size = size;
@@ -148,6 +189,7 @@ static bool safeRegion(Function &F) {
           allVariables[inst] = var;
         }
       }
+
       //get malloc instances
       if(auto *callInst = dyn_cast<CallInst>(inst)){
 
@@ -158,7 +200,7 @@ static bool safeRegion(Function &F) {
           errs() << "heap allocation found" << "\n";
           //get size of args
           int size = callInst->arg_size();
-          assert(size == 1);
+          //assert(size == 1);
           for(int i = 0; i < size; i++){
             Value* value = callInst->getArgOperand(i);
             if(auto *constantInt = dyn_cast<ConstantInt>(value)){
@@ -172,9 +214,32 @@ static bool safeRegion(Function &F) {
             }
             else{
               errs() << "size could be determined" << "\n";
+              //assert(false);
             }            
           }
+        }
+      }
+      else if(auto *alloInst = dyn_cast<AllocaInst>(inst)){
 
+        errs() << "allocaInst : " << *alloInst << "\n";
+        errs() << "type : " << *(alloInst->getAllocatedType()) << "\n";
+        Type *AllocaType = alloInst->getAllocatedType();
+
+        //temp variable
+        Variables var;
+        var.type = getVariableType(AllocaType, NULL);
+        if(var.type == VariableType::STRUCT){
+
+          StructType* structVar = (llvm::StructType*) AllocaType;
+          errs() << "struct found : " << *structVar << "\n";
+
+          //iterate the struct
+          for(auto *elem = structVar->element_begin(); elem != structVar->element_end(); ++elem){
+            errs() << "  size : "<< *(*elem)<<"\n";
+            Type* type = nullptr;
+            type = static_cast<Type*>(*elem);
+            errs() << "  type size : " << getVariableSize(type, NULL) << "\n";
+          }
         }
       }
 
@@ -190,6 +255,7 @@ static bool safeRegion(Function &F) {
 
 PreservedAnalyses SafeRegionPass::run(Function &F,
                                       FunctionAnalysisManager &AM) {
+
   if(!safeRegion(F))
     return PreservedAnalyses::all();
   return PreservedAnalyses::none();

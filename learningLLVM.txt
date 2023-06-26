@@ -9,3 +9,13 @@ build/bin/opt -disable-output /tmp/a.ll -passes=safeRegion
 
 4. how to build a new LLVM
 ninja -C build/ opt -j30
+
+5. Register pass
+/ext/anis8367/llvm-project/llvm/lib/Passes/PassRegistry.def
+
+6. DSE
+/ext/anis8367/llvm-project/llvm/lib/Transforms/Scalar/DeadStoreElimination.cpp
+
+7.MemoryBuiltins
+/ext/anis8367/llvm-project/llvm/include/llvm/Analysis/MemoryBuiltins.h
+/ext/anis8367/llvm-project/llvm/lib/Analysis/MemoryBuiltins.cpp

@@ -212,8 +212,17 @@ static uint64_t getPointerSize(const Value *V, const DataLayout &DL,
   ObjectSizeOpts Opts;
   Opts.NullIsUnknownSize = NullPointerIsDefined(F);
 
-  if (getObjectSize(V, Size, DL, &TLI, Opts))
-    return Size;
+  if (getObjectSize(V, Size, DL, &TLI, Opts)){
+            errs() << "############################################\n";
+            errs() << "POINTER SIZE:     " << Size << "\n";
+            errs() << "############################################\n";
+        return Size;
+  }
+
+  errs() << "############################################\n";
+  errs() << "POINTER SIZE:    not found\n";
+  errs() << "############################################\n";
+
   return MemoryLocation::UnknownSize;
 }
 

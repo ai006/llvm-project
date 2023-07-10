@@ -69,6 +69,7 @@ struct Variables{
 map<llvm::Instruction*, vector<Variables>> allVariables;
 
 //data structure to be used to hold all the instructions that use a variable
+map<llvm::Instruction*, vector<llvm::Instruction*>> allInstructions;
 
 /*
 function to use to get the type of variable
@@ -383,16 +384,41 @@ static bool safeRegion( Function &F, const TargetLibraryInfo &TLI) {
       find enums or list of all types of class variables
       */
 
+    }
+  }
+
+  /*Collect all the instructions that use the variable*/
+  for (auto& B : F) {
+    for (auto& I : B) {
+
+      //get instruction obj
+      Instruction *inst = &I;
+      
       //get all the instruciton that use this operand
       for(auto& op : inst->operands()){
-          for(auto U : op->users()){
-            if (auto I = dyn_cast<Instruction>(U)){
-                // an instruction uses V
-                errs() << "inst uses operand: " << *I <<"\n";
-            }
-          }
-      }
+        for(auto U : op->users()){
+          if (auto I = dyn_cast<Instruction>(U)){
+              // an instruction uses V
+              // errs() << "inst uses operand: " << *I <<"\n";
 
+              //check if this instruction is already recorded
+              if(allInstructions.count(inst)){
+                //check if the instruction that use the operand are not already included
+                if (std::count(allInstructions[inst].begin(), allInstructions[inst].end(), I)) {
+                    errs() << "Element found\n";
+                    //do nothing
+                }
+                else {
+                    errs() <<  "Element not found\n";
+                    allInstructions[inst].push_back(I);
+                }
+              }
+              //add instruction if not contained in datastructure
+              else
+                allInstructions[inst].push_back(I);
+          }
+        }
+      }
     }
   }
 

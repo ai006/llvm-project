@@ -37,9 +37,9 @@ $_ZN5stackIdE3popEv = comdat any
 
 ; Function Attrs: noinline uwtable
 define internal void @__cxx_global_var_init() #0 section ".text.startup" {
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZNSt8ios_base4InitC1Ev(ptr noundef nonnull align 1 dereferenceable(1) @_ZStL8__ioinit)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %1 = call i32 @__cxa_atexit(ptr @_ZNSt8ios_base4InitD1Ev, ptr @_ZStL8__ioinit, ptr @__dso_handle) #3
   ret void
 }
@@ -61,37 +61,37 @@ define dso_local noundef i32 @main() #4 {
   %5 = alloca %class.stack.0, align 8
   %6 = alloca i32, align 4
   store i32 0, ptr %1, align 4
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcEC2Ev(ptr noundef nonnull align 4 dereferenceable(16) %2)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcEC2Ev(ptr noundef nonnull align 4 dereferenceable(16) %3)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdEC2Ev(ptr noundef nonnull align 8 dereferenceable(84) %4)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdEC2Ev(ptr noundef nonnull align 8 dereferenceable(84) %5)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcE4pushEc(ptr noundef nonnull align 4 dereferenceable(16) %2, i8 noundef 97)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcE4pushEc(ptr noundef nonnull align 4 dereferenceable(16) %3, i8 noundef 120)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcE4pushEc(ptr noundef nonnull align 4 dereferenceable(16) %2, i8 noundef 98)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcE4pushEc(ptr noundef nonnull align 4 dereferenceable(16) %3, i8 noundef 121)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcE4pushEc(ptr noundef nonnull align 4 dereferenceable(16) %2, i8 noundef 99)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIcE4pushEc(ptr noundef nonnull align 4 dereferenceable(16) %3, i8 noundef 122)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdE4pushEd(ptr noundef nonnull align 8 dereferenceable(84) %4, double noundef 1.100000e+00)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdE4pushEd(ptr noundef nonnull align 8 dereferenceable(84) %5, double noundef 2.200000e+00)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdE4pushEd(ptr noundef nonnull align 8 dereferenceable(84) %4, double noundef 3.300000e+00)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdE4pushEd(ptr noundef nonnull align 8 dereferenceable(84) %5, double noundef 4.400000e+00)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdE4pushEd(ptr noundef nonnull align 8 dereferenceable(84) %4, double noundef 5.500000e+00)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @_ZN5stackIdE4pushEd(ptr noundef nonnull align 8 dereferenceable(84) %5, double noundef 6.600000e+00)
   store i32 0, ptr %6, align 4
   br label %7
@@ -102,13 +102,13 @@ define dso_local noundef i32 @main() #4 {
   br i1 %9, label %10, label %18
 
 10:                                               ; preds = %7
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %11 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %12 = call noundef i8 @_ZN5stackIcE3popEv(ptr noundef nonnull align 4 dereferenceable(16) %2)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %13 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_c(ptr noundef nonnull align 8 dereferenceable(8) %11, i8 noundef %12)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %14 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %13, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   br label %15
 
@@ -128,13 +128,13 @@ define dso_local noundef i32 @main() #4 {
   br i1 %21, label %22, label %30
 
 22:                                               ; preds = %19
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %23 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str.1)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %24 = call noundef i8 @_ZN5stackIcE3popEv(ptr noundef nonnull align 4 dereferenceable(16) %3)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %25 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_c(ptr noundef nonnull align 8 dereferenceable(8) %23, i8 noundef %24)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %26 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %25, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   br label %27
 
@@ -154,13 +154,13 @@ define dso_local noundef i32 @main() #4 {
   br i1 %33, label %34, label %42
 
 34:                                               ; preds = %31
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %35 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str.2)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %36 = call noundef double @_ZN5stackIdE3popEv(ptr noundef nonnull align 8 dereferenceable(84) %4)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %37 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEd(ptr noundef nonnull align 8 dereferenceable(8) %35, double noundef %36)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %38 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %37, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   br label %39
 
@@ -180,13 +180,13 @@ define dso_local noundef i32 @main() #4 {
   br i1 %45, label %46, label %54
 
 46:                                               ; preds = %43
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %47 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str.3)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %48 = call noundef double @_ZN5stackIdE3popEv(ptr noundef nonnull align 8 dereferenceable(84) %5)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %49 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEd(ptr noundef nonnull align 8 dereferenceable(8) %47, double noundef %48)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %50 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %49, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   br label %51
 
@@ -233,9 +233,9 @@ define linkonce_odr dso_local void @_ZN5stackIcE4pushEc(ptr noundef nonnull alig
   br i1 %8, label %9, label %12
 
 9:                                                ; preds = %2
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %10 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str.4)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %11 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %10, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   br label %22
 
@@ -270,9 +270,9 @@ define linkonce_odr dso_local void @_ZN5stackIdE4pushEd(ptr noundef nonnull alig
   br i1 %8, label %9, label %12
 
 9:                                                ; preds = %2
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %10 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str.4)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %11 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %10, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   br label %22
 
@@ -310,9 +310,9 @@ define linkonce_odr dso_local noundef i8 @_ZN5stackIcE3popEv(ptr noundef nonnull
   br i1 %7, label %8, label %11
 
 8:                                                ; preds = %1
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %9 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str.5)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %10 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %9, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   store i8 0, ptr %2, align 1
   br label %21
@@ -354,9 +354,9 @@ define linkonce_odr dso_local noundef double @_ZN5stackIdE3popEv(ptr noundef non
   br i1 %7, label %8, label %11
 
 8:                                                ; preds = %1
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %9 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(ptr noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, ptr noundef @.str.5)
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   %10 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %9, ptr noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)
   store double 0.000000e+00, ptr %2, align 8
   br label %21
@@ -382,7 +382,7 @@ define linkonce_odr dso_local noundef double @_ZN5stackIdE3popEv(ptr noundef non
 
 ; Function Attrs: noinline uwtable
 define internal void @_GLOBAL__sub_I_temp.cpp() #0 section ".text.startup" {
-  call void @llvm.riscv.ssmr(i64 2, i64 65535)
+  call void @llvm.riscv.ssmr(i64 2, i64 3735928559)
   call void @__cxx_global_var_init()
   ret void
 }

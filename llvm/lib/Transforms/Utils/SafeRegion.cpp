@@ -273,6 +273,37 @@ uint64_t getPointerSize(const Value *V, const DataLayout &DL,
   return 0;
 }
 
+void collectInst(Instruction *inst) {
+
+  //get all the instruciton that use this operand
+  for(auto& op : inst->operands()){
+    for(auto U : op->users()){
+      if (auto I = dyn_cast<Instruction>(U)){
+          // an instruction uses V
+          // errs() << "inst uses operand: " << *I <<"\n";
+
+          //check if this instruction is already recorded
+          if(allInstructions.count(inst)){
+            //check if the instruction that use the operand are not already included
+            if (std::count(allInstructions[inst].begin(), allInstructions[inst].end(), I)) {
+                //errs() << "Element found\n";
+                //do nothing
+            }
+            else {
+                //errs() <<  "Element not found\n";
+                allInstructions[inst].push_back(I);
+            }
+          }
+          //add instruction if not contained in datastructure
+          else
+            allInstructions[inst].push_back(I);
+      }
+    }
+  }
+
+  return;
+}
+
 
 /*
 Function used to collect all the variables 
@@ -293,7 +324,7 @@ void collectVariables( Function &F, const TargetLibraryInfo &TLI) {
       for(auto& op : inst->operands()){
         
         //check if any global value is used as an operand of the instruction
-        if(auto *globalVar = dyn_cast<GlobalVariable>(&op)){
+        if(auto *globalVar = dyn_cast<GlobalVariable>(&op)){         
 
           // errs() << "GLOBAL VARIABLE: " << *globalVar << "\n";
           VariableType type = getVariableType(inst->getType(), globalVar);
@@ -328,6 +359,8 @@ void collectVariables( Function &F, const TargetLibraryInfo &TLI) {
           //insert variable
           allVariables[inst].push_back(var);
           variableStored = true;
+
+          collectInst(inst);
         }
       }
 
@@ -354,6 +387,8 @@ void collectVariables( Function &F, const TargetLibraryInfo &TLI) {
                 // allVariables[inst] = var;
                 allVariables[inst].push_back(var);
                 variableStored = true;
+
+                collectInst(inst);
             }
             else{
               //errs() << "size could be determined" << "\n";
@@ -381,6 +416,8 @@ void collectVariables( Function &F, const TargetLibraryInfo &TLI) {
 
         allVariables[inst].push_back(var);
         variableStored = true;
+
+        collectInst(inst);
       }
 
       /*
@@ -396,43 +433,43 @@ void collectVariables( Function &F, const TargetLibraryInfo &TLI) {
 Function used to collect all the instructions which use the saved
 variables from the data collection.
 */
-void collectInstructions(Function &F, const TargetLibraryInfo &TLI) {
+// void collectInstructions(Function &F, const TargetLibraryInfo &TLI) {
 
-  /*Collect all the instructions that use the variable*/
-  for (auto& B : F) {
-    for (auto& I : B) {
+//   /*Collect all the instructions that use the variable*/
+//   for (auto& B : F) {
+//     for (auto& I : B) {
 
-      //get instruction obj
-      Instruction *inst = &I;
+//       //get instruction obj
+//       Instruction *inst = &I;
       
-      //get all the instruciton that use this operand
-      for(auto& op : inst->operands()){
-        for(auto U : op->users()){
-          if (auto I = dyn_cast<Instruction>(U)){
-              // an instruction uses V
-              // errs() << "inst uses operand: " << *I <<"\n";
+//       //get all the instruciton that use this operand
+//       for(auto& op : inst->operands()){
+//         for(auto U : op->users()){
+//           if (auto I = dyn_cast<Instruction>(U)){
+//               // an instruction uses V
+//               // errs() << "inst uses operand: " << *I <<"\n";
 
-              //check if this instruction is already recorded
-              if(allInstructions.count(inst)){
-                //check if the instruction that use the operand are not already included
-                if (std::count(allInstructions[inst].begin(), allInstructions[inst].end(), I)) {
-                    //errs() << "Element found\n";
-                    //do nothing
-                }
-                else {
-                    //errs() <<  "Element not found\n";
-                    allInstructions[inst].push_back(I);
-                }
-              }
-              //add instruction if not contained in datastructure
-              else
-                allInstructions[inst].push_back(I);
-          }
-        }
-      }
-    }
-  }
-}
+//               //check if this instruction is already recorded
+//               if(allInstructions.count(inst)){
+//                 //check if the instruction that use the operand are not already included
+//                 if (std::count(allInstructions[inst].begin(), allInstructions[inst].end(), I)) {
+//                     //errs() << "Element found\n";
+//                     //do nothing
+//                 }
+//                 else {
+//                     //errs() <<  "Element not found\n";
+//                     allInstructions[inst].push_back(I);
+//                 }
+//               }
+//               //add instruction if not contained in datastructure
+//               else
+//                 allInstructions[inst].push_back(I);
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 
 /*
 Function which is used to insert an SSMR instruction before 
@@ -477,7 +514,7 @@ static bool safeRegion( Function &F, const TargetLibraryInfo &TLI) {
 
   collectVariables(F, TLI);
 
-  collectInstructions(F, TLI);
+  // collectInstructions(F, TLI);
 
   changed = insertSSMR(F, TLI);
 

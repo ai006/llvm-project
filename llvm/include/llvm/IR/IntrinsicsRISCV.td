@@ -1557,6 +1557,25 @@ def int_riscv_aes64ks1i : DefaultAttrsIntrinsic<[llvm_i64_ty],
                                                 [llvm_i64_ty, llvm_i32_ty],
                                                 [IntrNoMem, IntrSpeculatable,
                                                  ImmArg<ArgIndex<1>>]>;
+let TargetPrefix = "riscv" in {
+  //===------------------- SafeRegion(SMAD) --------------------===//
+  //
+  //1st element is the return type (left blank meaning its void)
+  //2nd element declares (the arguments) --ptr , i64, i64
+  //IntrArgMemOnly indicates accesses memory that its pointer-typed argument(s) points to, but may access an unspecified amount.
+  //IntrSpeculatable indicates that the intrinsic is safe to speculate
+  def int_riscv_ssmr : DefaultAttrsIntrinsic<
+      [], [llvm_i64_ty, llvm_i64_ty],
+      [IntrArgMemOnly, IntrSpeculatable]>;                                           
+
+}
+
+// Intrinsic ID for the custom intrinsic
+let TargetPrefix = "riscv" in {
+  def int_riscv_custom : Intrinsic<[llvm_i32_ty], [llvm_i32_ty, llvm_i32_ty],
+                                   [IntrNoMem]>;
+}
+
 
 // Zknh
 def int_riscv_sha256sig0 : ScalarCryptoGprIntrinsicAny;

@@ -273,12 +273,13 @@ uint64_t getPointerSize(const Value *V, const DataLayout &DL,
   return 0;
 }
 
-
 /*
-Function used to collect all the variables 
-from their types, size, which location they will be stored etc..
+change this so that you get all the aloca Information 
+and when you have a load inst then check for its partner
 */
-void collectVariables( Function &F, const TargetLibraryInfo &TLI) {
+static bool safeRegion( Function &F, const TargetLibraryInfo &TLI) {
+
+  bool changed = false;
 
   for (auto& B : F) {
     for (auto& I : B) {
@@ -390,13 +391,6 @@ void collectVariables( Function &F, const TargetLibraryInfo &TLI) {
 
     }
   }
-}
-
-/*
-Function used to collect all the instructions which use the saved
-variables from the data collection.
-*/
-void collectInstructions(Function &F, const TargetLibraryInfo &TLI) {
 
   /*Collect all the instructions that use the variable*/
   for (auto& B : F) {
@@ -416,11 +410,11 @@ void collectInstructions(Function &F, const TargetLibraryInfo &TLI) {
               if(allInstructions.count(inst)){
                 //check if the instruction that use the operand are not already included
                 if (std::count(allInstructions[inst].begin(), allInstructions[inst].end(), I)) {
-                    //errs() << "Element found\n";
+                    errs() << "Element found\n";
                     //do nothing
                 }
                 else {
-                    //errs() <<  "Element not found\n";
+                    errs() <<  "Element not found\n";
                     allInstructions[inst].push_back(I);
                 }
               }
@@ -432,66 +426,54 @@ void collectInstructions(Function &F, const TargetLibraryInfo &TLI) {
       }
     }
   }
-}
-
-/*
-Function which is used to insert an SSMR instruction before 
-the use of a variable
-*/
-bool insertSSMR(Function &F, const TargetLibraryInfo &TLI) {
-  
-  bool changed = false;
-
-  //value to hold size and the address of the instruction
-  llvm::Value *V1, *V2;
-
-  //get the ssmr function
-  Function* new_func = Intrinsic::getDeclaration(F.getParent(), Intrinsic::riscv_ssmr);
-  IntegerType* Int64Ty = Type::getInt64Ty(F.getParent()->getContext());
-  
-  for (auto& B : F) {
-    for (auto& I : B) {
-
-      
-
-
-      if(auto *callInst = dyn_cast<CallInst>(&I)){
-          V1 = llvm::ConstantInt::get(Int64Ty, 2);
-          V2 = llvm::ConstantInt::get(Int64Ty, 0xDEADBEEF);
-          Instruction* ssmr = CallInst::Create(new_func, {V1, V2});
-          ssmr->insertBefore(callInst);
-      }
-    }
-  }
-
-  return changed;
-}
-
-/*
-change this so that you get all the aloca Information 
-and when you have a load inst then check for its partner
-*/
-static bool safeRegion( Function &F, const TargetLibraryInfo &TLI) {
-
-  bool changed = false;
-
-  collectVariables(F, TLI);
-
-  collectInstructions(F, TLI);
-
-  changed = insertSSMR(F, TLI);
 
   errs() << "number of variables: " << allVariables.size() << "\n";
   // for( auto var : allVariables){
   //   errs() << "inst: " << *(var.first) <<"\n";
 
   //   vector<Variables> values = var.second;
-  
+    
   //   for(auto value : values){
   //     printVariable(value);
   //     errs() << "\n";
   //   }
   // }
+
+
+  
+  llvm::Value *V1, *V2;
+  
+
+  for (auto& B : F) {
+    for (auto& I : B) {
+      if(auto *callInst = dyn_cast<CallInst>(&I)){
+          IRBuilder<> builder(callInst);
+          Function* new_func = Intrinsic::getDeclaration(F.getParent(), Intrinsic::riscv_ssmr);
+          IntegerType* Int64Ty = Type::getInt64Ty(F.getParent()->getContext());
+          V1 = llvm::ConstantInt::get(Int64Ty, 2);
+          V2 = llvm::ConstantInt::get(Int64Ty, 6);
+          std::vector<Value*> val;
+          val.push_back(V1);
+          val.push_back(V2);
+          llvm::ArrayRef<Value *> args(val);
+          Instruction* ssmr = CallInst::Create(new_func, {V1, V2});
+          callInst->insertBefore(callInst);
+      }
+    }
+  }
+
+  //add instrinsic function here
+  // static LLVMContext TheContext;
+  // Module* mod = new Module("test", TheContext );
+  // BasicBlock* block = BasicBlock::Create(getGlobalContext(), “entry”, temp);
+  // IRBuilder<> builder(block);
+
+  // std::vector<Type *> arg_type;
+  // arg_type.push_back(IntegerType::get(getGlobalContext(),32));
+  // arg_type.push_back(IntegerType::get(getGlobalContext(),64));
+  // arg_type.push_back(IntegerType::get(getGlobalContext(),64));
+
+  // Function *fun = Intrinsic::getDeclaration(mod, Intrinsic::int_ssmr,arg_type);
 
   return true;
 }

@@ -83,5 +83,8 @@ TARGET_BUILTIN(__builtin_riscv_sm3p1, "LiLi", "nc", "zksh")
 TARGET_BUILTIN(__builtin_riscv_ntl_load, "v.", "t", "experimental-zihintntl")
 TARGET_BUILTIN(__builtin_riscv_ntl_store, "v.", "t", "experimental-zihintntl")
 
+//safeRegion
+TARGET_BUILTIN(__builtin_riscv_ssmr, "vLiLi", "", "ssmr")
+
 #undef BUILTIN
 #undef TARGET_BUILTIN

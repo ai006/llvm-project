@@ -626,6 +626,18 @@ class Priv_rr<string opcodestr, bits<7> funct7>
 // Instructions
 //===----------------------------------------------------------------------===//
 
+
+let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
+def SSMR : RVInstSSMR< OPC_CUSTOM_1, (outs), (ins  GPR:$rs1, uimm20_lui:$imm20),
+                  "ssmr", "$rs1, $imm20">;
+}
+
+//let Namespace = "RISCV" in {
+//  def int_riscv_custom : RVInstR<"custom $rs1, $rs2", (outs), (ins GPR:$rs1, GPR:$rs2),
+//                                   "">;
+//}
+
+
 let hasSideEffects = 0, mayLoad = 0, mayStore = 0 in {
 let isReMaterializable = 1, isAsCheapAsAMove = 1,
     IsSignExtendingOpW = 1 in

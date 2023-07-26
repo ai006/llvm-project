@@ -53,6 +53,7 @@ def InstFormatCLH    : InstFormat<19>;
 def InstFormatCSB    : InstFormat<20>;
 def InstFormatCSH    : InstFormat<21>;
 def InstFormatOther  : InstFormat<22>;
+def InstFormatSSMR  : InstFormat<23>;
 
 class RISCVVConstraint<bits<3> val> {
   bits<3> Value = val;
@@ -421,6 +422,18 @@ class RVInstB<bits<3> funct3, RISCVOpcode opcode, dag outs, dag ins,
   let Inst{14-12} = funct3;
   let Inst{11-8} = imm12{3-0};
   let Inst{7} = imm12{10};
+  let Opcode = opcode.Value;
+}
+
+//safeRegion
+class RVInstSSMR<RISCVOpcode opcode, dag outs, dag ins, string opcodestr,
+              string argstr>
+    : RVInst<outs, ins, opcodestr, argstr, [], InstFormatSSMR> {
+  bits<20> imm20;
+  bits<5> rs1;
+
+  let Inst{31-12} = imm20;
+  let Inst{11-7} = rs1;
   let Opcode = opcode.Value;
 }
 

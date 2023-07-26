@@ -77,6 +77,10 @@ RISCVTargetLowering::RISCVTargetLowering(const TargetMachine &TM,
                                          const RISCVSubtarget &STI)
     : TargetLowering(TM), Subtarget(STI) {
 
+    // Add support for the custom intrinsic
+  setOperationAction(ISD::INTRINSIC_VOID, MVT::i32, Custom);
+  setOperationAction(ISD::INTRINSIC_W_CHAIN, MVT::i32, Custom);
+
   if (Subtarget.isRVE())
     report_fatal_error("Codegen not yet implemented for RVE");
 

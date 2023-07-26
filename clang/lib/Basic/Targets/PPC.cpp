@@ -228,7 +228,7 @@ static void defineXLCompatMacros(MacroBuilder &Builder) {
   Builder.defineMacro("__mftbu", "__builtin_ppc_mftbu");
   Builder.defineMacro("__mfmsr", "__builtin_ppc_mfmsr");
   Builder.defineMacro("__mtmsr", "__builtin_ppc_mtmsr");
-  Builder.defineMacro("__mfspr", "__builtin_ppc_mfspr");
+  Builder.defineMacro("__", "__builtin_ppc_mfspr");
   Builder.defineMacro("__mtspr", "__builtin_ppc_mtspr");
   Builder.defineMacro("__fric", "__builtin_ppc_fric");
   Builder.defineMacro("__frim", "__builtin_ppc_frim");
